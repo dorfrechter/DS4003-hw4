@@ -7,6 +7,18 @@ import plotly.express as px
 
 #get dataset
 df = pd.read_csv('gdp_pcap.csv')
+def convert_k_to_number(value):
+    if isinstance(value, str) and value.lower().endswith('k'):
+        # Remove the 'k' and convert to float, then multiply by 1,000
+        return float(value[:-1]) * 1000
+    else:
+        # If the value doesn't end with 'k', return it as-is (or convert to numeric if necessary)
+        return float(value)
+    
+
+for column in df.columns[1:]:
+    df[column] = df[column].apply(convert_k_to_number)
+
 yearList= []
 unique_countries = df['country'].unique()
 for i in range(1800,2101): #get a list of all the years
